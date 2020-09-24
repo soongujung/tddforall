@@ -157,8 +157,28 @@ class MockitoStep1Test {
 	}
 
 	@Test
-	@DisplayName("#2 stubbing > Calcultor 를 stubbing 하기")
-	void testStubbingCalculator(){
+	@DisplayName("verify")
+	void testVerify(){
+		Score score1 = Score.builder()
+			.score(100D)
+			.subject("국어")
+			.build();
 
+		Score score2 = Score.builder()
+			.score(99D)
+			.subject("국어")
+			.build();
+
+		List<Score> scores = Arrays.asList(score1, score2);
+
+		// given ~ when
+		GradeRepository mockRepository = Mockito.mock(GradeRepositoryImpl.class);
+		Mockito.when(mockRepository.findAllScore())
+			.thenReturn(scores);
+
+		GradeService gradeService = new GradeServiceImpl(mockRepository);
+		gradeService.getGradeLevelForAllEmployees();
+
+		Mockito.verify(mockRepository).findAllScore();
 	}
 }
